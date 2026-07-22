@@ -138,6 +138,20 @@ ma2026.py totp-verify -u USERNAME -c CODE
 ```bash
 ma2026.py totp-verify -u john_doe -c 123456
 ```
+---
+
+### `totp-disable`
+Clear the TOTP key used for two-factor authentication. A valid token is required.
+```
+ma2026.py totp-disable -u USERNAME -t TOKEN
+```
+- `-u, --username` – Required.
+- `-t, --token` – Required.
+
+**Example**:
+```bash
+ma2026.py totp-disable -u john_doe -t <token>
+```
 
 ---
 

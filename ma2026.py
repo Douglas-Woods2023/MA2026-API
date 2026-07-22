@@ -107,6 +107,20 @@ def do_totp_verify(args):
     else:
         print("TOTP 验证失败")
 
+def do_totp_disable(args):
+    url = f"{args.server}/api/account/totp/disable"
+    headers = {"Authorization": f"Bearer {args.token}"}
+    payload = {"username": args.username}
+    resp = api_request("POST", url, headers=headers, json_data=payload)
+    if resp.status_code == 200:
+        print("TOTP 已禁用")
+    else:
+        print(f"禁用 TOTP 失败: {resp.status_code}")
+        try:
+            print_json(resp.json())
+        except:
+            print(resp.text)
+
 def do_change_password(args):
     url = f"{args.server}/api/account/change_password"
     payload = {
@@ -203,6 +217,11 @@ def main():
     p.add_argument('-u', '--username', required=True)
     p.add_argument('-c', '--code', required=True, help='6位动态码')
 
+    # totp-disable
+    p = subparsers.add_parser('totp-disable', help='禁用 TOTP 双因素认证')
+    p.add_argument('-u', '--username', required=True)
+    p.add_argument('-t', '--token', required=True)
+
     # change-password
     p = subparsers.add_parser('change-password', help='修改密码')
     p.add_argument('-u', '--username', required=True)
@@ -232,6 +251,7 @@ def main():
         'profile': do_profile,
         'totp-enable': do_totp_enable,
         'totp-verify': do_totp_verify,
+        'totp-disable': do_totp_disable,
         'change-password': do_change_password,
         'revoke-tokens': do_revoke_tokens,
         'delete': do_delete,
