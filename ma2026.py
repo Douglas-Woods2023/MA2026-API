@@ -181,6 +181,17 @@ def do_logout(args):
         except:
             print(resp.text)
 
+def do_verify_password(args):
+    url = f"{args.server}/api/account/verify_password"
+    payload = {"username": args.username, "password": args.password}
+    resp = api_request("POST", url, json_data=payload)
+    if resp.status_code == 200 and resp.json().get('valid'):
+        print("密码正确")
+        sys.exit(0)
+    else:
+        print("密码错误")
+        sys.exit(1)
+
 def main():
     parser = argparse.ArgumentParser(description="MA2026 Command Line Tool")
     parser.add_argument('--server', '-s', default=DEFAULT_SERVER,
@@ -242,6 +253,11 @@ def main():
     p = subparsers.add_parser('logout', help='使当前 token 失效')
     p.add_argument('-t', '--token', required=True)
 
+    # verify-password
+    p = subparsers.add_parser('verify-password', help='验证密码是否正确')
+    p.add_argument('-u', '--username', required=True)
+    p.add_argument('-p', '--password', required=True)
+
     args = parser.parse_args()
 
     # 分发命令
@@ -256,6 +272,7 @@ def main():
         'revoke-tokens': do_revoke_tokens,
         'delete': do_delete,
         'logout': do_logout,
+        'verify-password': do_verify_password,
     }
     cmd = args.command
     if cmd in commands:

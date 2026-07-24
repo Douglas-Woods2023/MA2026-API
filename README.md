@@ -223,6 +223,23 @@ ma2026.py logout -t eyJhbGciOiJIUzI1NiIs...
 
 ---
 
+### `verify-password`
+Verify if a given password is correct for a user. This command does **not** require a token.
+
+```
+ma2026.py verify-password -u USERNAME -p PASSWORD
+```
+
+- `-u, --username` – Required.
+- `-p, --password` – Required.
+
+**Example**:
+```bash
+ma2026.py verify-password -u john_doe -p mypassword123
+```
+
+---
+
 ## Server Configuration
 
 By default, MA2026 connects to `http://uk.frp.one:20017`. You can override this using the `--server` option on any command. For persistent changes, you can set an environment variable `MA2026_SERVER` or modify the `DEFAULT_SERVER` constant in the script.
